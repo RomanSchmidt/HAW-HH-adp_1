@@ -46,14 +46,28 @@ public class LinkedList<T> extends AMyList<T> {
         return oldElement.getValue();
     }
 
+    private Element _getAtPosition(int position) {
+        Element current;
+        if (this._size / 2 >= position) {
+            current = this._first;
+            for (int i = 0; i <= position; ++i) {
+                current = current.getChild();
+            }
+        } else {
+            current = this._last;
+            position = this._size - position;
+            for (int i = 0; i < position; ++i) {
+                current = current.getParent();
+            }
+        }
+        return current;
+    }
+
     @Override
     public T drop(int positionToDelete) {
         this._checkIndexOutOfBounce(positionToDelete);
 
-        Element current = this._first;
-        for (int i = 0; i <= positionToDelete; ++i) {
-            current = current.getChild();
-        }
+        Element current = this._getAtPosition(positionToDelete);
         current.remove();
         --this._size;
         return current.getValue();
@@ -98,11 +112,8 @@ public class LinkedList<T> extends AMyList<T> {
             this.push(value);
             return true;
         }
-        Element current = this._first;
-        for (int i = 0; i < positionToAdd; ++i) {
-            current = current.getChild();
-        }
-        this._appendToElement(current, new Element(value));
+        Element current = this._getAtPosition(positionToAdd);
+        this._prependToElement(current, new Element(value));
         ++this._size;
         return true;
     }
@@ -139,10 +150,7 @@ public class LinkedList<T> extends AMyList<T> {
     public T get(int elemPosition) {
         this._checkIndexOutOfBounce(elemPosition);
 
-        Element current = this._first;
-        for (int i = 0; i <= elemPosition; ++i) {
-            current = current.getChild();
-        }
+        Element current = this._getAtPosition(elemPosition);
         return current.getValue();
     }
 
@@ -205,14 +213,14 @@ public class LinkedList<T> extends AMyList<T> {
         private Element _current = _first;
 
         public boolean hasNext() {
-            if(isEmpty()) {
+            if (isEmpty()) {
                 return false;
             }
             return this._current.getChild() != _last;
         }
 
         public T next() {
-            if(this._current.getChild() == _last) {
+            if (this._current.getChild() == _last) {
                 return null;
             }
             this._current = _current.getChild();
