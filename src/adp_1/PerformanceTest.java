@@ -5,6 +5,7 @@ import java.util.Random;
 public abstract class PerformanceTest {
     private static MyList<Integer> _myList = new MyList<>();
     private static LinkedList<Integer> _linkedList = new LinkedList<>();
+    private static Random _random = new Random();
 
     public static void main(String[] args) {
         if (args.length != 4) {
@@ -133,32 +134,32 @@ public abstract class PerformanceTest {
 
     private static void _testContains(AMyList<Integer> list, int repOp) {
         for (int i = 0; i < repOp; ++i) {
-            list.contains(new Random().nextInt(list.length() - 1));
+            list.contains(PerformanceTest._random.nextInt(list.length() - 1));
         }
     }
 
     private static void _testDelete(AMyList<Integer> list, int repOp) {
         for (int i = 0; i < repOp; ++i) {
-            list.drop(new Random().nextInt(1));
+            list.drop(PerformanceTest._random.nextInt(1));
         }
     }
 
     private static void _testDeleteRandom(AMyList<Integer> list, int repOp) {
         for (int i = 0; i < repOp; ++i) {
-            list.drop(new Random().nextInt(new Random().nextInt(list.length())));
+            list.drop(PerformanceTest._random.nextInt(list.length()));
         }
     }
 
     private static void _testInsert(AMyList<Integer> list, int repOp) {
         for (int i = 0; i < repOp; ++i) {
-            list.add(new Random().nextInt(list.length() - 1), 1);
+            list.add(PerformanceTest._random.nextInt(list.length() - 1), 1);
         }
     }
 
     private static void _fillLists(int n) {
         for (int i = 0; i < n; ++i) {
-            PerformanceTest._myList.push(new Random().nextInt(n));
-            PerformanceTest._linkedList.push(new Random().nextInt(n));
+            PerformanceTest._myList.push(PerformanceTest._random.nextInt(n));
+            PerformanceTest._linkedList.push(PerformanceTest._random.nextInt(n));
         }
     }
 
